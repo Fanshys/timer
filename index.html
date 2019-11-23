@@ -1,16 +1,51 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title></title>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-        <link rel="stylesheet" type="text/css" href="./build/css/style.min.css">
-    </head>
-    <body>
+
+<head>
+    <title></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" type="text/css" href="./build/css/style.min.css">
+</head>
+
+<body>
+    <header class="header">
         <div class="container">
-            <h2>hello</h2>
+            <div class="row">
+                <div class="col-xl-2"></div>
+                <div class="col-xl-6"></div>
+                <div class="col-12 col-xl-4 header__buttons">
+                    <a href="#" class="button header__button">Войти</a>
+                    <a href="#" class="button header__button">Регистрация</a>
+                </div>
+            </div>
         </div>
-        <h1>hello</h1>
-        <script type="text/javascript" src="./build/js/script.min.js"></script>
-    </body>
+    </header>
+    <div class="container">
+        <div class="row">
+            <h1 class="col-12 title">Секундомеры</h1>
+            <div class="stopwatch-container col-12 col-xl-6">
+                <div class="stopwatch-item row">
+                    <div class="stopwatch-item__name-block col-12 col-md-6">
+                        <h2 class="stopwatch-item__name">Мой секундомер</h2>
+                    </div>
+                    <div class="stopwatch-item__counter-block col-12 col-md-6" name="clockform">
+                        <span id="clock" class="stopwatch-item__counter stopwatch">00:00:00</span>
+                        <div class="stopwatch-item__buttons">
+                            <button class="stopwatch-item__button start-button stopwatch-button">Старт</button>
+                            <button class="stopwatch-item__button pause-button stopwatch-button">Пауза</button>
+                            <button class="stopwatch-item__button reset-button stopwatch-button">Ресет</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="stopwatch__create">
+                    <input class="input input__create" type="text" placeholder="Название секундомера">
+                    <button class="button button__create">Создать секундомер</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="./build/js/script.min.js"></script>
+</body>
+
 </html>

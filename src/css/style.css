@@ -1,2 +1,181 @@
-h1 {
-  font-size: 40px; }
+@font-face {
+  font-family: "Opensans";
+  src: url("../../build/fonts/Opensans/OpenSans-Light.ttf");
+  font-weight: 300; }
+
+@font-face {
+  font-family: "Opensans";
+  src: url("../../build/fonts/Opensans/OpenSans-LightItalic.ttf");
+  font-weight: 300;
+  font-style: italic; }
+
+@font-face {
+  font-family: "Opensans";
+  src: url("../../build/fonts/Opensans/OpenSans-Regular.ttf");
+  font-weight: 400; }
+
+@font-face {
+  font-family: "Opensans";
+  src: url("../../build/fonts/Opensans/OpenSans-Italic.ttf");
+  font-weight: 400;
+  font-style: italic; }
+
+@font-face {
+  font-family: "Opensans";
+  src: url("../../build/fonts/Opensans/OpenSans-SemiBold.ttf");
+  font-weight: 500; }
+
+@font-face {
+  font-family: "Opensans";
+  src: url("../../build/fonts/Opensans/OpenSans-SemiBoldItalic.ttf");
+  font-weight: 500;
+  font-style: italic; }
+
+@font-face {
+  font-family: "Opensans";
+  src: url("../../build/fonts/Opensans/OpenSans-Bold.ttf");
+  font-weight: 600; }
+
+@font-face {
+  font-family: "Opensans";
+  src: url("../../build/fonts/Opensans/OpenSans-BoldItalic.ttf");
+  font-weight: 600;
+  font-style: italic; }
+
+@font-face {
+  font-family: "Opensans";
+  src: url("../../build/fonts/Opensans/OpenSans-ExtraBold.ttf");
+  font-weight: 700; }
+
+@font-face {
+  font-family: "Opensans";
+  src: url("../../build/fonts/Opensans/OpenSans-ExtraBoldItalic.ttf");
+  font-weight: 700;
+  font-style: italic; }
+
+body {
+  min-width: 320px; }
+
+.button {
+  text-decoration: none;
+  text-transform: uppercase;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  background: none;
+  border: 2px solid #00b3d6;
+  padding: 5px 20px;
+  color: #b4f5fd;
+  transition-duration: .3s; }
+  .button:hover {
+    text-decoration: none;
+    background-color: #00b3d6;
+    color: white; }
+  .button__create {
+    margin-left: 15px; }
+    @media (max-width: 767px) {
+      .button__create {
+        margin: 15px auto;
+        display: block;
+        width: 100%;
+        padding: 10px 20px; } }
+
+.input {
+  padding: 5px 15px 6px 15px;
+  background: transparent;
+  border: 2px solid #00b3d6;
+  color: #b4f5fd;
+  font-size: 14px; }
+  .input::placeholder {
+    color: #37536c; }
+  .input__create {
+    margin-left: -15px; }
+    @media (max-width: 767px) {
+      .input__create {
+        margin: 0 auto;
+        display: block;
+        width: 100%;
+        padding: 10px 15px 11px 15px; } }
+
+.header {
+  height: 80px;
+  background-color: #262465;
+  padding: 15px; }
+  .header__buttons {
+    padding-top: 13px;
+    text-align: right; }
+  .header__button {
+    margin-right: 15px; }
+    .header__button:last-child {
+      margin-right: 0; }
+
+.logo {
+  color: #b4f5fd;
+  font-size: 32px;
+  font-weight: 500;
+  padding-left: 0; }
+
+body {
+  background-color: #071127;
+  font-family: Opensans; }
+
+.title {
+  padding-left: 0;
+  color: #b4f5fd;
+  margin-top: 40px;
+  margin-bottom: 15px;
+  font-size: 32px; }
+  @media (max-width: 767px) {
+    .title {
+      margin-left: 15px; } }
+
+.stopwatch-container {
+  padding: 15px; }
+
+.stopwatch-item {
+  background-image: -webkit-gradient(linear, left top, right top, from(#091838), to(#101e39));
+  background-color: #101e39;
+  padding: 15px;
+  margin-bottom: 20px;
+  transition-duration: .2s; }
+  @media (max-width: 767px) {
+    .stopwatch-item {
+      padding: 0; } }
+  .stopwatch-item__name-block {
+    display: table;
+    height: 62px; }
+  .stopwatch-item:hover {
+    box-shadow: 0px 0px 25px 0px #00b3d642; }
+  .stopwatch-item:last-child {
+    margin-bottom: 0; }
+  .stopwatch-item__counter-block {
+    text-align: center; }
+  .stopwatch-item__counter {
+    font-size: 24px;
+    border: none;
+    color: #b4f5fd; }
+  .stopwatch-item__name {
+    display: table-cell;
+    color: #b4f5fd;
+    font-size: 24px;
+    text-align: center;
+    vertical-align: middle; }
+  .stopwatch-item__buttons {
+    margin: 0 auto; }
+    @media (max-width: 767px) {
+      .stopwatch-item__buttons {
+        margin: 10px auto; } }
+  .stopwatch-item__button {
+    padding: 4px 15px;
+    color: #37536c;
+    cursor: pointer;
+    background: none;
+    border: none;
+    transition-duration: .3s; }
+    .stopwatch-item__button:hover {
+      background-color: #00b3d6;
+      color: white; }
+
+.stopwatch__create {
+  margin-bottom: 30px;
+  margin-top: 30px; }
