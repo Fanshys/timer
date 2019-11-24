@@ -2,6 +2,8 @@
 @import "fonts"
 body
 	min-width: 320px
+	background-color: #071127
+	font-family: Opensans
 .button
 	text-decoration: none
 	text-transform: uppercase
@@ -56,9 +58,7 @@ body
 	font-size: 32px
 	font-weight: 500
 	padding-left: 0
-body
-	background-color: #071127
-	font-family: Opensans
+
 .title
 	padding-left: 0
 	color: #b4f5fd
@@ -66,22 +66,46 @@ body
 	margin-bottom: 15px
 	font-size: 32px
 	+xs-md
-		margin-left: 15px
+		padding-left: 15px
 .stopwatch-container
 	padding: 15px
 .stopwatch-item
+	position: relative
+	overflow: hidden
 	background-image: -webkit-gradient(linear,left top,right top,from(#091838),to(#101e39))
 	background-color: #101e39
 	padding: 15px
 	margin-bottom: 20px
 	transition-duration: .2s
-	+xs-md
-		padding: 0
-	&__name-block
-		display: table
-		height: 62px
 	&:hover
 		box-shadow: 0px 0px 25px 0px #00b3d642
+		.stopwatch-item__delete
+			right: -35px
+			top: -20px
+	+xs-md
+		padding: 0
+	&__delete
+		z-index: 10
+		border: none
+		cursor: pointer
+		position: absolute
+		right: -60px
+		top: -45px
+		background-color: #00b3d6
+		transform: rotate(45deg)
+		width: 80px
+		height: 50px
+		transition-duration: .5s
+		+xs-md
+			right: -35px
+			top: -20px
+		i
+			margin-top: 25px
+	&__name-block
+		height: 62px
+		&:hover
+			.stopwatch-item__name-icon
+				display: inline-block
 	&:last-child
 		margin-bottom: 0
 	&__counter-block
@@ -91,11 +115,19 @@ body
 		border: none
 		color: #b4f5fd
 	&__name
-		display: table-cell
+		background: none
+		border: none
 		color: #b4f5fd
 		font-size: 24px
 		text-align: center
-		vertical-align: middle
+		margin-top: 12px
+		max-width: 200px
+	&__name-icon
+		cursor: pointer
+		background: none
+		border: none
+		color: #b4f5fd
+		display: none
 	&__buttons
 		margin: 0 auto
 		+xs-md
