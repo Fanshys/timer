@@ -177,6 +177,12 @@ button,
 input { /* 1 */
   overflow: visible;
 }
+button:focus,
+input:focus {
+  outline-style: none;
+  outline-width: 0px !important;
+  outline-color: none !important;
+}
 
 /**
  * Remove the inheritance of text transform in Edge, Firefox, and IE.

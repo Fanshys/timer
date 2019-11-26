@@ -1,10 +1,11 @@
 {
-  "name": "Olimpia",
+  "name": "Timer",
   "version": "1.0.0",
   "description": "",
   "main": "gulpfile.js",
   "dependencies": {
-    "normalize.css": "^8.0.1"
+    "normalize.css": "^8.0.1",
+    "sortablejs": "^1.10.1"
   },
   "devDependencies": {
     "browser-sync": "^2.26.7",

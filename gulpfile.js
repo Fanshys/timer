@@ -20,7 +20,7 @@ var jsFiles = [
     './src/libs/jquery.min.js',
     './src/libs/bootstrap4/js/bootstrap.min.js',
     './src/libs/popper.min.js',
-    './src/js/script.js' // always last place
+    './src/js/script.js', // always last place
 ];
 
 gulp.task('sass', function () {
@@ -47,9 +47,7 @@ gulp.task('styles', function() {
 gulp.task('scripts', function() {
     return gulp.src(jsFiles)
         .pipe(concat('script.min.js'))
-        .pipe(uglify({
-            toplevel: true
-        }))
+        //.pipe(uglify())
         .pipe(gulp.dest('./build/js'))
         .pipe(browserSync.stream());
 });
