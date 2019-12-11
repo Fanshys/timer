@@ -1,17 +1,17 @@
 // Класс секундомера
 class Stopwatch {
-    constructor(display, name) {
+    constructor(display, name, time = [0, 0, 0]) {
         this.name = name;
         this.running = false;
         this.display = display;
-        this.reset();
+        this.times = time;
         this.print(this.times);
     }
 
     // Сброс счетчика
     reset() {
         this.stop()
-        this.times = [0, 0, 0, 0];
+        this.times = [0, 0, 0];
         this.print();
     }
 
@@ -21,6 +21,7 @@ class Stopwatch {
         if (!this.running) {
             this.running = true;
             requestAnimationFrame(this.step.bind(this));
+            setTimeout(localStor, 5000);
         }
     }
 
@@ -42,12 +43,12 @@ class Stopwatch {
     calculate(timestamp) {
         var diff = timestamp - this.time;
         // Hundredths of a second are 100 ms
-        this.times[3] += diff / 10;
-        // Seconds are 100 hundredths of a second
-        if (this.times[3] >= 100) {
-            this.times[2] += 1;
-            this.times[3] -= 100;
-        }
+        this.times[2] += diff / 1000;
+        // // Seconds are 100 hundredths of a second
+        // if (this.times[3] >= 100) {
+        //     this.times[2] += 1;
+        //     this.times[3] -= 100;
+        // }
         // Minutes are 60 seconds
         if (this.times[2] >= 60) {
             this.times[1] += 1;
@@ -70,7 +71,7 @@ class Stopwatch {
         return `\
         ${pad0(times[0], 2)}:\
         ${pad0(times[1], 2)}:\
-        ${pad0(times[2], 2)}`;
+        ${pad0(Math.floor(times[2]), 2)}`;
     }
 
     // Получение данных объекта
@@ -96,16 +97,16 @@ let stopwatch = [];
 let i = 0;
 
 // Инициализация объектов для существующих елементов
-$('.stopwatch-item').each(function () {
-    stopwatch.push(new Stopwatch(
-        $(`.stopwatch:eq(${i})`),
-        $(`.stopwatch-item__name:eq(${i})`).val()
-    ))
-    i++;
-})
+// $('.stopwatch-item').each(function () {
+//     stopwatch.push(new Stopwatch(
+//         $(`.stopwatch:eq(${i})`),
+//         $(`.stopwatch-item__name:eq(${i})`).val()
+//     ))
+//     i++;
+// })
 
 // Создание нового элемента
-const createStopwatch = function (name) {
+function createStopwatch(name, time = [0, 0, 0]) {
     $('.stopwatch__create').before(
         '<div class="stopwatch-item row">' +
         '<button class="stopwatch-item__delete"><i class="far fa-trash-alt"></i></button>' +
@@ -125,10 +126,12 @@ const createStopwatch = function (name) {
     // Инициализация созданного элемента
     stopwatch.push(new Stopwatch(
         $(`.stopwatch:eq(${i})`),
-        name
+        name,
+        time
     ))
     i++;
     $('.input__create').val('');
+    localStor();
 }
 
 // Сбор данных со всех существующих объектов секундомера
@@ -136,6 +139,15 @@ const getDataStopwatch = function () {
     let arr = [];
     stopwatch.forEach(elem => arr.push(elem.getData()));
     return JSON.stringify(arr);
+}
+
+// Пересылка собранных данных в localstorage
+function localStor() {
+    let json = getDataStopwatch();
+    if (json != localStorage.getItem("json")) {
+        setTimeout(localStor, 5000);
+    }
+    localStorage.setItem("json", json);
 }
 
 // Триггеры для управления секундомерами
@@ -164,6 +176,7 @@ $(document).on('click', '.stopwatch-item__delete', function () {
     stopwatch.splice(x, 1);
     $(this).parent().remove();
     i--;
+    localStor();
 });
 
 // Переименование секундомера
@@ -176,5 +189,29 @@ $(document).on('click', '.stopwatch-item__name-icon', function () {
         $(this).html('<i class="fas fa-pencil-alt"></i>');
         $(this).prev().attr("readonly", "readonly").css("border-bottom", "none").css("color", "#b4f5fd");
         stopwatch[x].name = $(this).prev().val();
+        localStor();
     }
 });
+
+$(document).ready(function () {
+    // Создание секундомеров из localStorage при загрузке страницы
+    if (JSON.parse(localStorage.getItem("json")).length > 0) {
+        const items = JSON.parse(localStorage.getItem("json"));
+        items.forEach(element => createStopwatch(element["name"], element["time"]));
+    } else {
+        createStopwatch("Секундомер");
+    }
+
+    // Применение переименования по нажатию на enter
+    $(".stopwatch-item__name").keyup(function (event) {
+        if (event.keyCode == 13) {
+            if (!$(this).attr("readonly")) {
+                let x = $(this).index('.stopwatch-item__name-icon');
+                $(this).next().html('<i class="fas fa-pencil-alt"></i>');
+                $(this).attr("readonly", "readonly").css("border-bottom", "none").css("color", "#b4f5fd");
+                stopwatch[x].name = $(this).prev().val();
+                localStor();
+            }
+        }
+    });
+})
