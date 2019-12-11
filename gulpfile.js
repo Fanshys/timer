@@ -6,6 +6,7 @@ var autoprefixer = require('gulp-autoprefixer');
 var concat = require('gulp-concat');
 var cleanCSS = require('gulp-clean-css');
 var uglify = require('gulp-uglify');
+const babel = require('gulp-babel');
 var browserSync = require('browser-sync').create();
  
 sass.compiler = require('node-sass');
@@ -47,7 +48,10 @@ gulp.task('styles', function() {
 gulp.task('scripts', function() {
     return gulp.src(jsFiles)
         .pipe(concat('script.min.js'))
-        //.pipe(uglify())
+        .pipe(babel({
+            presets: ['@babel/env']
+        }))
+        .pipe(uglify())
         .pipe(gulp.dest('./build/js'))
         .pipe(browserSync.stream());
 });
