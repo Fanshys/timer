@@ -1,3 +1,4 @@
+
 // Класс секундомера
 class Stopwatch {
     constructor(display, name, time = [0, 0, 0]) {
@@ -44,11 +45,6 @@ class Stopwatch {
         var diff = timestamp - this.time;
         // Hundredths of a second are 100 ms
         this.times[2] += diff / 1000;
-        // // Seconds are 100 hundredths of a second
-        // if (this.times[3] >= 100) {
-        //     this.times[2] += 1;
-        //     this.times[3] -= 100;
-        // }
         // Minutes are 60 seconds
         if (this.times[2] >= 60) {
             this.times[1] += 1;
@@ -96,15 +92,6 @@ function pad0(value, count) {
 let stopwatch = [];
 let i = 0;
 
-// Инициализация объектов для существующих елементов
-// $('.stopwatch-item').each(function () {
-//     stopwatch.push(new Stopwatch(
-//         $(`.stopwatch:eq(${i})`),
-//         $(`.stopwatch-item__name:eq(${i})`).val()
-//     ))
-//     i++;
-// })
-
 // Создание нового элемента
 function createStopwatch(name, time = [0, 0, 0]) {
     $('.stopwatch__create').before(
@@ -142,11 +129,10 @@ const getDataStopwatch = function () {
 }
 
 // Пересылка собранных данных в localstorage
+//setInterval(localStor, 5000);
+workerTimers.setInterval(localStor, 100);
 function localStor() {
     let json = getDataStopwatch();
-    if (json != localStorage.getItem("json")) {
-        setTimeout(localStor, 5000);
-    }
     localStorage.setItem("json", json);
 }
 
@@ -154,21 +140,25 @@ function localStor() {
 $(document).on('click', '.start-button', function () {
     let x = $(this).index('.start-button');
     stopwatch[x].start();
+    localStor();
 });
 
 $(document).on('click', '.pause-button', function () {
     let x = $(this).index('.pause-button');
     stopwatch[x].stop();
+    localStor();
 });
 
 $(document).on('click', '.reset-button', function () {
     let x = $(this).index('.reset-button');
     stopwatch[x].reset();
+    localStor();
 });
 
 $(document).on('click', '.button__create', function () {
     let name = $('.input__create').val();
     createStopwatch(name);
+    localStor();
 });
 
 $(document).on('click', '.stopwatch-item__delete', function () {
@@ -203,15 +193,24 @@ $(document).ready(function () {
     }
 
     // Применение переименования по нажатию на enter
-    $(".stopwatch-item__name").keyup(function (event) {
+    $(document).on('keyup', '.stopwatch-item__name', (function (event) {
         if (event.keyCode == 13) {
             if (!$(this).attr("readonly")) {
-                let x = $(this).index('.stopwatch-item__name-icon');
+                let x = $(this).index('.stopwatch-item__name');
                 $(this).next().html('<i class="fas fa-pencil-alt"></i>');
                 $(this).attr("readonly", "readonly").css("border-bottom", "none").css("color", "#b4f5fd");
-                stopwatch[x].name = $(this).prev().val();
+                stopwatch[x].name = $(this).val();
                 localStor();
             }
+        }
+    }));
+
+    // Создание по нажатию на enter
+    $(".input__create").keyup(function (event) {
+        if (event.keyCode == 13) {
+            let name = $(this).val();
+            createStopwatch(name);
+            localStor();
         }
     });
 })

@@ -104,8 +104,7 @@ body {
   background-color: #262465;
   padding: 15px; }
   .header__buttons {
-    padding-top: 13px;
-    text-align: right; }
+    padding-top: 13px; }
   .header__button {
     margin-right: 15px; }
     .header__button:last-child {

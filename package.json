@@ -5,11 +5,14 @@
   "main": "gulpfile.js",
   "dependencies": {
     "normalize.css": "^8.0.1",
-    "sortablejs": "^1.10.1"
+    "requirejs": "^2.3.6",
+    "sortablejs": "^1.10.1",
+    "worker-timers": "^5.0.36"
   },
   "devDependencies": {
     "@babel/core": "^7.7.5",
     "@babel/preset-env": "^7.7.6",
+    "babel-preset-es2015-script": "^1.1.0",
     "browser-sync": "^2.26.7",
     "gulp": "^4.0.2",
     "gulp-autoprefixer": "^7.0.0",
