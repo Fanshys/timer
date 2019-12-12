@@ -121,20 +121,26 @@ function createStopwatch(name, time = [0, 0, 0]) {
 }
 
 // Сбор данных со всех существующих объектов секундомера
-const getDataStopwatch = function () {
+function getDataStopwatch() {
     let arr = [];
     stopwatch.forEach(elem => arr.push(elem.getData()));
     return JSON.stringify(arr);
 }
 
-// Пересылка собранных данных в localstorage
-function localStor() {
-    let json = getDataStopwatch();
-    if (json == localStorage.getItem("json")) {
+// Проверка на наличие работающих секундомеров
+function checkTimersWork() {
+    let result = false;
+    stopwatch.forEach(elem => elem.running == true ? result = true : false);
+    if (!result) {
         myWorker.postMessage({
             'work': 'false'
         });
     }
+}
+
+// Пересылка собранных данных в localstorage
+function localStor() {
+    let json = getDataStopwatch();
     localStorage.setItem("json", json);
 }
 
@@ -142,8 +148,10 @@ var myWorker = new Worker("./build/js/worker.js");
 myWorker.postMessage({
     'work': 'true'
 });
-myWorker.onmessage = function (e) {
+let ie = 0;
+myWorker.onmessage = function () {
     localStor();
+    checkTimersWork();
 }
 
 // Триггеры для управления секундомерами
