@@ -5,20 +5,8 @@
 
 @font-face {
   font-family: "Opensans";
-  src: url("../../build/fonts/Opensans/OpenSans-LightItalic.ttf");
-  font-weight: 300;
-  font-style: italic; }
-
-@font-face {
-  font-family: "Opensans";
   src: url("../../build/fonts/Opensans/OpenSans-Regular.ttf");
   font-weight: 400; }
-
-@font-face {
-  font-family: "Opensans";
-  src: url("../../build/fonts/Opensans/OpenSans-Italic.ttf");
-  font-weight: 400;
-  font-style: italic; }
 
 @font-face {
   font-family: "Opensans";
@@ -27,31 +15,13 @@
 
 @font-face {
   font-family: "Opensans";
-  src: url("../../build/fonts/Opensans/OpenSans-SemiBoldItalic.ttf");
-  font-weight: 500;
-  font-style: italic; }
-
-@font-face {
-  font-family: "Opensans";
   src: url("../../build/fonts/Opensans/OpenSans-Bold.ttf");
   font-weight: 600; }
 
 @font-face {
   font-family: "Opensans";
-  src: url("../../build/fonts/Opensans/OpenSans-BoldItalic.ttf");
-  font-weight: 600;
-  font-style: italic; }
-
-@font-face {
-  font-family: "Opensans";
   src: url("../../build/fonts/Opensans/OpenSans-ExtraBold.ttf");
   font-weight: 700; }
-
-@font-face {
-  font-family: "Opensans";
-  src: url("../../build/fonts/Opensans/OpenSans-ExtraBoldItalic.ttf");
-  font-weight: 700;
-  font-style: italic; }
 
 body {
   min-width: 320px;
@@ -166,7 +136,13 @@ body {
   .stopwatch-item__name-block {
     height: 62px; }
     .stopwatch-item__name-block:hover .stopwatch-item__name-icon {
-      display: inline-block; }
+      opacity: 1; }
+    @media (max-width: 767px) {
+      .stopwatch-item__name-block {
+        display: flex;
+        justify-content: center; } }
+    .stopwatch-item__name-block label {
+      position: relative; }
   .stopwatch-item:last-child {
     margin-bottom: 0; }
   .stopwatch-item__counter-block {
@@ -188,7 +164,11 @@ body {
     background: none;
     border: none;
     color: #b4f5fd;
-    display: none; }
+    opacity: 0;
+    transition-duration: .2s;
+    position: absolute;
+    right: -15px;
+    top: 20px; }
   .stopwatch-item__buttons {
     margin: 0 auto; }
     @media (max-width: 767px) {

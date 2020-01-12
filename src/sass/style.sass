@@ -104,7 +104,12 @@ body
 		height: 62px
 		&:hover
 			.stopwatch-item__name-icon
-				display: inline-block
+				opacity: 1
+		+xs-md
+			display: flex
+			justify-content: center
+		label
+			position: relative
 	&:last-child
 		margin-bottom: 0
 	&__counter-block
@@ -126,7 +131,11 @@ body
 		background: none
 		border: none
 		color: #b4f5fd
-		display: none
+		opacity: 0
+		transition-duration: .2s
+		position: absolute
+		right: -15px
+		top: 20px
 	&__buttons
 		margin: 0 auto
 		+xs-md

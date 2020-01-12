@@ -13,14 +13,11 @@ sass.compiler = require('node-sass');
 
 var cssFiles = [
     './src/css/normalize.css',
-    './src/libs/bootstrap4/css/bootstrap.min.css',
+    './src/libs/bootstrap4/bootstrap.min.css',
     './src/css/style.css' // always last place
 ];
 
 var jsFiles = [
-    './src/libs/jquery.min.js',
-    './src/libs/bootstrap4/js/bootstrap.min.js',
-    './src/libs/popper.min.js',
     './src/js/script.min.js', // always last place
 ];
 
@@ -51,7 +48,9 @@ gulp.task('scripts', function() {
         .pipe(babel({
             presets: ['@babel/env'],
         }))
-        .pipe(uglify())
+        .pipe(uglify({
+            toplevel: true
+        }))
         .pipe(gulp.dest('./src/js'))
 });
 
@@ -67,7 +66,7 @@ gulp.task('html', function() {
         .pipe(browserSync.stream());
 })
 
-gulp.task('watch', function () {
+gulp.task('default', function () {
     browserSync.init({
         server: {
             baseDir: "./"
