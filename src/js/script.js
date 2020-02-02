@@ -1,21 +1,29 @@
 let timerCount = 0;
 let timersArray = [];
 
-function createStopwatch(name, time = 0, id = timerCount) {
-    document.querySelector('.stopwatch__create').insertAdjacentHTML('beforebegin',
-        '<div class="stopwatch-item row">' +
-        '<button class="stopwatch-item__delete"><i class="far fa-trash-alt"></i></button>' +
-        '<div class="stopwatch-item__name-block col-12 col-md-6">' +
-        '<label><input class="stopwatch-item__name" value="' + name + '" readonly="readonly" maxlength="15">' +
-        '<button class="stopwatch-item__name-icon"><i class="fas fa-pencil-alt"></i></button></label>' +
-        '</div>' +
-        '<div class="stopwatch-item__counter-block col-12 col-md-6" name="clockform">' +
-        '<span id="timer-' + id + '" class="stopwatch-item__counter stopwatch">00:00:00</span>' +
-        '<div id="' + id + '" class="stopwatch-item__buttons">' +
-        '<button class="stopwatch-item__button start-button">Старт</button>' +
-        '<button class="stopwatch-item__button pause-button">Пауза</button>' +
-        '<button class="stopwatch-item__button reset-button">Сброс</button>' +
-        '</div></div></div>'
+const createStopwatch = (name, time = 0, id = timerCount) => {
+    document.querySelector('.timer-items').insertAdjacentHTML('beforeend',
+        `<li class="timer-item" data-id="${id}">
+            <label class="timer-item__name">
+                <input class="timer-item__title" value="${name}" readonly="readonly">
+                <button class="timer-item__rename"></button>
+            </label>
+            <div class="timer-item__right">
+                <span class="timer-item__counter" data-id="${id}">00:00:00</span>
+                <div class="timer-item__buttons">
+                    <button class="button timer-item__button start-button">Start</button>
+                    <button class="button timer-item__button pause-button">Pause</button>
+                    <button class="button timer-item__button reset-button">Reset</button>
+                </div>
+            </div>
+            <div class="timer-item__options">
+                <button class="timer-item__open"></button>
+                <ul class="timer-item__list">
+                    <li class="timer-item__option timer-item__option_delete" title="Удалить"></li>
+                    <li class="timer-item__option timer-item__option_rename" title="Переименовать"></li>
+                </ul>
+            </div>
+        </li>`
     )
     worker.postMessage({
         'func': 'create',
@@ -29,16 +37,15 @@ function createStopwatch(name, time = 0, id = timerCount) {
         'id': id
     })
     timerCount++;
-    allEventSet();
 }
 
-var worker = new Worker("./build/js/worker.js");
+const worker = new Worker("./build/js/worker.js");
 
 worker.onmessage = function (e) {
     let id = e.data['id'];
-    var item = timersArray.find(item => item.id === id);
+    let item = timersArray.find(item => item.id === id);
 
-    document.querySelector("#timer-" + id).innerHTML = e.data["time"];
+    document.querySelector(`.timer-item__counter[data-id='${id}']`).innerHTML = e.data["time"];
     document.title = e.data["name"] + ' - ' + e.data["time"];
 
     item.time = e.data["diff"];
@@ -46,123 +53,120 @@ worker.onmessage = function (e) {
     sendData();
 };
 
-function sendData() {
+const sendData = () => {
     localStorage.setItem("timersArray", JSON.stringify(timersArray));
 }
 
-function startTimer(id) {
+const startTimer = (id) => {
     worker.postMessage({
         'func': 'start',
         'id': id
     });
 }
 
-function pauseTimer(id) {
+const pauseTimer = (id) => {
     worker.postMessage({
         'func': 'pause',
         'id': id
     });
 }
 
-function resetTimer(id) {
+const resetTimer = (id) => {
     worker.postMessage({
         'func': 'reset',
         'id': id
     });
 }
 
-function renameTimerEvent() {
-    // Переименование секундомера
-    document.querySelectorAll(".stopwatch-item:nth-last-of-type(2) .stopwatch-item__name-icon")[0].addEventListener('click', function () {
-        let id = this.parentElement.parentElement.nextElementSibling.children[1].getAttribute('id');
-        if (this.previousSibling.getAttribute("readonly") == 'readonly') {
-            this.innerHTML = '<i class="fas fa-check"></i>';
-            this.previousSibling.removeAttribute("readonly");
-            this.previousSibling.setAttribute("style", "border-bottom: 2px solid #00b3d6; color: white");
-        } else {
-            this.innerHTML = '<i class="fas fa-pencil-alt"></i>';
-            this.previousSibling.setAttribute("readonly", "readonly");
-            this.previousSibling.setAttribute("style", "border-bottom: none; color: #b4f5fd");
-            let name = this.previousSibling.value;
-            let item = timersArray.find(item => item.id == id);
-            item.name = name;
-            worker.postMessage({
-                'func': 'rename',
-                'id': id,
-                'name': name
-            });
-            sendData();
-        }
-    });
-
-    // Применение переименования по нажатию на enter
-    document.querySelectorAll(".stopwatch-item:nth-last-of-type(2) .stopwatch-item__name")[0].addEventListener('keyup', function (event) {
-        if (event.keyCode == 13) {
-            if (!this.getAttribute("readonly")) {
-                let id = this.parentElement.parentElement.nextElementSibling.children[1].getAttribute('id');
-                this.nextElementSibling.innerHTML = '<i class="fas fa-pencil-alt"></i>';
-                this.setAttribute("readonly", "readonly");
-                this.setAttribute("style", "border-bottom: none; color: #b4f5fd");
-
-                let name = this.value;
-                let item = timersArray.find(item => item.id == id);
-                item.name = name;
-                worker.postMessage({
-                    'func': 'rename',
-                    'id': id,
-                    'name': name
-                });
-                sendData();
-            }
-        }
-    });
+const toggleOptions = (id) => {
+    let item = document.querySelector(`.timer-item[data-id='${id}']`);
+    let menu = document.querySelector(`.timer-item[data-id='${id}'] .timer-item__options`);
+    if (menu.classList.contains('timer-item__options_open')) {
+        menu.classList.remove('timer-item__options_open');
+        menu.classList.add('timer-item__options_close');
+        setTimeout(() => {
+            item.classList.remove('timer-item_open');
+        }, 200);
+        setTimeout(() => {
+            menu.classList.remove('timer-item__options_close');
+        }, 500);
+    } else {
+        menu.classList.add('timer-item__options_open');
+        setTimeout(() => {
+            item.classList.add('timer-item_open');
+        }, 250);
+    }
 }
 
-function deleteTimerEvent() {
-    document.querySelectorAll(".stopwatch-item:nth-last-of-type(2) .stopwatch-item__delete")[0].addEventListener('click', function () {
-        let id = this.parentElement.children[2].children[1].getAttribute('id');
+const renameTimer = (id) => {
+    let title = document.querySelector(`.timer-item[data-id='${id}'] .timer-item__title`);
+    let button = document.querySelector(`.timer-item[data-id='${id}'] .timer-item__rename`);
+    if (title.getAttribute("readonly") == 'readonly') {
+        title.removeAttribute("readonly");
+        title.classList.add('timer-item__title_change');
+        title.select();
+        title.focus();
+        button.classList.add('timer-item__rename_visible');
+    } else {
+        title.setAttribute("readonly", "readonly");
+        title.classList.remove('timer-item__title_change');
+        button.classList.remove('timer-item__rename_visible');
+        let name = title.value;
+        let item = timersArray.find(item => item.id == id);
+        item.name = name;
         worker.postMessage({
-            'func': 'delete',
-            'id': id
+            'func': 'rename',
+            'id': id,
+            'name': name
         });
-        var item = timersArray.find(item => item.id == id);
-        timersArray.splice(timersArray.indexOf(item), 1);
-        this.parentElement.remove();
-        localStorage.setItem("timersArray", JSON.stringify(timersArray));
+        sendData();
+        toggleOptions(id);
+    }
+}
+
+const deleteTimer = (id) => {
+    worker.postMessage({
+        'func': 'delete',
+        'id': id
     });
+    let item = timersArray.find(item => item.id == id);
+    timersArray.splice(timersArray.indexOf(item), 1);
+    document.querySelector(`.timer-item[data-id='${id}']`).classList.add('timer-item_delete');
+    setTimeout(() => {
+        document.querySelector(`.timer-item[data-id='${id}']`).remove();
+    }, 500);
+    localStorage.setItem("timersArray", JSON.stringify(timersArray));
 }
 
-function startTimerEvent() {
-    document.querySelectorAll(".stopwatch-item:nth-last-of-type(2) .start-button")[0].addEventListener('click', function () {
-        let id = this.parentElement.getAttribute('id');
-        startTimer(id);
-    });
+const timersCreate = (array, x = 0) => {
+    if (x < array.length) {
+        let element = array[x];
+        timerCount = timerCount < element["id"] ? element["id"] : timerCount;
+        createStopwatch(element["name"], element["time"], element["id"]);
+        x++;
+        setTimeout(() => {
+            timersCreate(array, x);
+        }, 150);
+    }
 }
 
-function pauseTimerEvent() {
-    document.querySelectorAll(".stopwatch-item:nth-last-of-type(2) .pause-button")[0].addEventListener('click', function () {
-        let id = this.parentElement.getAttribute('id');
-        pauseTimer(id);
-    });
-}
+document.addEventListener("DOMContentLoaded", function () {
+    // Создание секундомеров из localStorage при загрузке страницы
+    if (localStorage.getItem("timersArray") && JSON.parse(localStorage.getItem("timersArray")).length) {
+        const items = JSON.parse(localStorage.getItem("timersArray"));
+        timersCreate(items);
+    } else {
+        createStopwatch("Секундомер");
+    }
+})
 
-function resetTimerEvent() {
-    document.querySelectorAll(".stopwatch-item:nth-last-of-type(2) .reset-button")[0].addEventListener('click', function () {
-        let id = this.parentElement.getAttribute('id');
-        resetTimer(id);
-    });
-}
+document.querySelector('.timer-create__button').addEventListener('click', function () {
+    let name = document.querySelector('.timer-create__input').value;
+    document.querySelector('.timer-create__input').value = '';
+    createStopwatch(name);
+});
 
-function allEventSet() {
-    startTimerEvent();
-    pauseTimerEvent();
-    resetTimerEvent();
-    renameTimerEvent();
-    deleteTimerEvent();
-}
-
-// Создание по нажатию на enter
-document.querySelector(".input__create").addEventListener('keyup', function (event) {
+document.querySelector(".timer-create__input").addEventListener('keyup', function (event) {
     if (event.keyCode == 13) {
         let name = this.value;
         createStopwatch(name);
@@ -170,22 +174,42 @@ document.querySelector(".input__create").addEventListener('keyup', function (eve
     }
 });
 
-//Создание
-document.querySelector('.button__create').addEventListener('click', function () {
-    let name = document.querySelector('.input__create').value;
-    document.querySelector('.input__create').value = '';
-    createStopwatch(name);
-});
+document.querySelector('.timer-items').addEventListener('click', (e) => {
+    let item = e.target;
+    let id = item.closest('.timer-item').dataset.id;
 
-document.addEventListener("DOMContentLoaded", function () {
-    // Создание секундомеров из localStorage при загрузке страницы
-    if (localStorage.getItem("timersArray") && JSON.parse(localStorage.getItem("timersArray")).length) {
-        const items = JSON.parse(localStorage.getItem("timersArray"));
-        items.forEach(element => {
-            timerCount = timerCount < element["id"] ? element["id"] : timerCount;
-            createStopwatch(element["name"], element["time"], element["id"]);
-        });
-    } else {
-        createStopwatch("Секундомер");
+    switch (true) {
+        case item.classList.contains('start-button'):
+            startTimer(id);
+            break;
+        case item.classList.contains('pause-button'):
+            pauseTimer(id);
+            break;
+        case item.classList.contains('reset-button'):
+            resetTimer(id);
+            break;
+        case item.classList.contains('timer-item__open'):
+            toggleOptions(id);
+            break;
+        case item.classList.contains('timer-item__option_delete'):
+            deleteTimer(id);
+            break;
+        case item.classList.contains('timer-item__option_rename'):
+            renameTimer(id);
+            break;
+        case item.classList.contains('timer-item__rename'):
+            renameTimer(id);
+            break;
+    }
+})
+
+document.querySelector('.timer-items').addEventListener('keyup', (e) => {
+    if (e.keyCode == 13) {
+        let item = e.target;
+        let id = item.closest('.timer-item').dataset.id;
+        switch (true) {
+            case item.classList.contains('timer-item__title'):
+                renameTimer(id);
+        }
     }
 })

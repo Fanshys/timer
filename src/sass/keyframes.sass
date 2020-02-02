@@ -1,0 +1,45 @@
+@keyframes create
+	0%
+		transform: translateX(-200px)
+		opacity: 0
+	100%
+		transform: translate(0, 0)
+		opacity: 1
+
+@keyframes delete
+	0%
+		transform: none
+		opacity: 1
+	100%
+		transform: translateX(200px)
+		opacity: 0
+
+@keyframes open
+	0%
+		top: -45px
+		right: -55px
+		opacity: 0
+	50%
+		top: 0
+		right: 0
+		opacity: .5
+	100%
+		right: -100px
+		top: 0
+		opacity: 1
+
+@keyframes close
+	0%
+		right: -100px
+		top: 0
+		transform: none
+	50%
+		top: 0
+		right: 0
+		opacity: 0.5
+	100%
+		top: -45px
+		right: -55px
+		transform: rotate(45deg)
+		opacity: 0
+		

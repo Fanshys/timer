@@ -1,5 +1,7 @@
 @import "mixins"
 @import "fonts"
+@import "keyframes"
+
 body
 	min-width: 320px
 	background-color: #071127
@@ -19,13 +21,6 @@ body
 		text-decoration: none
 		background-color: #00b3d6
 		color: white
-	&__create
-		margin-left: 15px
-		+xs-md
-			margin: 15px auto
-			display: block
-			width: 100%
-			padding: 10px 20px
 .input
 	padding: 5px 15px 6px 15px
 	background: transparent
@@ -34,122 +29,165 @@ body
 	font-size: 14px
 	&::placeholder
 		color: #37536c
-	&__create
-		margin-left: -15px
-		+xs-md
-			margin: 0 auto
-			display: block
-			width: 100%
-			padding: 10px 15px 11px 15px
 
-.header
-	height: 80px
-	background-color: #262465
-	padding: 15px
-	&__buttons
-		padding-top: 13px
-	&__button
-		margin-right: 15px
-		&:last-child
-			margin-right: 0
-.logo
-	color: #b4f5fd
-	font-size: 32px
-	font-weight: 500
-	padding-left: 0
-
-.title
-	padding-left: 0
-	color: #b4f5fd
-	margin-top: 40px
-	margin-bottom: 15px
-	font-size: 32px
-	+xs-md
-		padding-left: 15px
-.stopwatch-container
-	padding: 15px
-.stopwatch-item
-	position: relative
-	overflow: hidden
-	background-image: -webkit-gradient(linear,left top,right top,from(#091838),to(#101e39))
-	background-color: #101e39
-	padding: 15px
-	margin-bottom: 20px
-	transition-duration: .2s
-	&:hover
-		box-shadow: 0px 0px 25px 0px #00b3d642
-		.stopwatch-item__delete
-			right: -35px
-			top: -20px
-	+xs-md
-		padding: 0
-	&__delete
-		z-index: 10
-		border: none
-		cursor: pointer
-		position: absolute
-		right: -60px
-		top: -45px
-		background-color: #00b3d6
-		transform: rotate(45deg)
-		width: 80px
-		height: 50px
-		transition-duration: .5s
-		+xs-md
-			right: -35px
-			top: -20px
-		i
-			margin-top: 25px
-	&__name-block
-		height: 62px
+.timer
+	padding: 60px 120px
+	&__title
+		color:#b4f5fd
+		font-size: 32px
+	&-items
+		padding-left: 0
+		margin-bottom: 0
+		margin-top: 40px
+		list-style-type: none
+		max-width: 600px
+		display: flex
+		flex-direction: column
+	&-item
+		padding: 15px 30px
+		background-image: -webkit-gradient(linear,left top,right top,from(#091838),to(#101e39))
+		background-color: #101e39
+		transition-duration: .3s
+		display: flex
+		align-items: center
+		justify-content: space-between
+		position: relative
+		margin-bottom: 20px
+		animation: create .5s ease-in-out forwards
+		overflow: hidden
+		&_delete
+			animation: delete .5s ease-in-out forwards
+		&_open
+			overflow: visible
 		&:hover
-			.stopwatch-item__name-icon
-				opacity: 1
-		+xs-md
+			box-shadow: 0 0 25px 0 #00b3d642
+			.timer-item__options
+				top: -25px
+				right: -35px
+			.timer-item__options_open
+				top: 0
+				right: 0
+		&__title
+			background: none
+			border: none
+			padding: 0
+			color: #b4f5fd
+			font-size: 20px
+			&::selection
+				background-color: #00b3d6
+				color: white
+			&_change
+				border-bottom: 2px solid #00b3d6
+				color: white
+		&__name
+			margin-bottom: 0
+			position: relative
+		&__rename
+			cursor: pointer
+			display: none
+			border: none
+			background: none
+			background-image: url(../img/success.svg)
+			width: 18px
+			height: 18px
+			position: absolute
+			right: 0
+			top: 0
+			bottom: 0
+			margin: auto 0
+			&_visible
+				display: block
+		&__button
+			border: none
+			color: #37536c
+			&:hover
+				color: white
+				background-color: #00b3d6
+		&__counter
+			color: #b4f5fd
+			font-size: 20px
+			text-align: center
+			margin-bottom: 5px
+		&__right
 			display: flex
 			justify-content: center
-		label
-			position: relative
-	&:last-child
-		margin-bottom: 0
-	&__counter-block
-		text-align: center
-	&__counter
-		font-size: 24px
-		border: none
-		color: #b4f5fd
-	&__name
-		background: none
-		border: none
-		color: #b4f5fd
-		font-size: 24px
-		text-align: center
-		margin-top: 12px
-		max-width: 200px
-	&__name-icon
-		cursor: pointer
-		background: none
-		border: none
-		color: #b4f5fd
-		opacity: 0
-		transition-duration: .2s
-		position: absolute
-		right: -15px
-		top: 20px
-	&__buttons
-		margin: 0 auto
-		+xs-md
-			margin: 10px auto
-	&__button
-		padding: 4px 15px
-		color: #37536c
-		cursor: pointer
-		background: none
-		border: none
-		transition-duration: .3s
-		&:hover
+			flex-direction: column
+		&__options
+			position: absolute
+			top: -45px
+			right: -55px
+			overflow: hidden
+			transform: rotate(45deg)
+			transition-duration: .3s
+			&_open
+				top: 0
+				right: 0
+				transform: none
+				height: 100%
+				width: 100px
+				background-color: #00b3d6
+				animation: open .5s ease-in-out forwards
+				display: flex
+				align-items: center
+				.timer-item__open
+					position: absolute
+					top: -25px
+					right: -35px
+					transform: rotate(45deg)
+					background-image: url(../img/close.svg)
+					background-size: 15px
+				.timer-item__list
+					display: flex
+			&_close
+				height: 100%
+				width: 100px
+				animation: close .5s ease-in-out forwards
+				background-color: #00b3d6
+				.timer-item__open
+					position: absolute
+					top: -25px
+					right: -35px
+					transform: rotate(45deg)
+					background-image: url(../img/close.svg)
+					background-size: 15px
+		&__open
+			background: none
+			border: none
+			padding: 0
 			background-color: #00b3d6
-			color: white
-.stopwatch__create
-	margin-bottom: 30px
-	margin-top: 30px
+			width: 70px
+			height: 50px
+			cursor: pointer
+			background-image: url('../img/ellipses.svg')
+			background-size: 20px
+			background-repeat: no-repeat
+			background-position: center top 30px
+			svg
+				width: 18px
+		&__list
+			padding-left: 0
+			list-style-type: none
+			display: none
+			margin-bottom: 0
+			width: 100%
+			justify-content: center
+		&__option
+			cursor: pointer
+			font-size: 14px
+			width: 20px
+			height: 20px
+			background-position: center
+			background-repeat: no-repeat
+			margin-right: 10px
+			&:last-child
+				margin-right: 0
+			&_rename
+				background-image: url(../img/rename.svg)
+			&_delete
+				background-image: url(../img/delete.svg)
+	&-create
+		transition-duration: .3s
+		&__input
+			margin-right: 10px
+		&__button
+			padding: 5px 20px 6px 20px

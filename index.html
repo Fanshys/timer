@@ -6,20 +6,19 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" integrity="sha256-46qynGAkLSFpVbEBog43gvNhfrOj+BmwXdxFgVK/Kvc=" crossorigin="anonymous" />
     <link rel="stylesheet" type="text/css" href="./build/css/style.min.css">
 </head>
 
 <body>
-    <div class="container">
-        <h1 class="title">Секундомеры</h1>
-        <div id="itemList" class="stopwatch-container col-12 col-xl-6">
-            <div class="stopwatch__create">
-                <input class="input input__create" type="text" placeholder="Название секундомера">
-                <button class="button button__create">Создать секундомер</button>
-            </div>
+    <section class="timer">
+        <h1 class="timer__title">Секундомеры</h1>
+        <ul class="timer-items">
+        </ul>
+        <div class="timer-create">
+            <input class="input timer-create__input" type="text" placeholder="Название секундомера">
+            <button class="button timer-create__button">Создать секундомер</button>
         </div>
-    </div>
+    </section>
     <script type="text/javascript" src="./build/js/script.min.js"></script>
 </body>
 

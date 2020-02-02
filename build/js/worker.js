@@ -38,7 +38,7 @@ class Timer {
 		if (!this.running) return;
 		this.calc();
 		this.message();
-		setTimeout(this.step.bind(this), 1000);
+		setTimeout(this.step.bind(this), 500);
 	}
 
 	calc() {
